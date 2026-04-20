@@ -21,39 +21,43 @@ def addd(A, B, C):
 
 # remember to do all arithmetic modulo p
 def commit(a, sL, b, sR, alpha, beta, gamma, tau_1, tau_2):
-    pass
-    # return (A, S, V, T1, T2)
+    return (
+        addd(multiply(G, a), multiply(H, b), multiply(B, alpha)),
+        addd(multiply(G, sL), multiply(H, sR), multiply(B, beta)),
+        add(multiply(G, a*b), multiply(B, gamma)),
+        add(multiply(G, a*sR +b * sL), multiply(B, tau_1)),
+        add(multiply(G, sR* sL), multiply(B, tau_2)),
+    )
 
 
 def evaluate(f_0, f_1, f_2, u):
     return (f_0 + f_1 * u + f_2 * u**2) % p
 
 def prove(blinding_0, blinding_1, blinding_2, u):
-    # fill this in
-    # return pi
-    pass
+    return (blinding_0 + blinding_1 * u + blinding_2 * u**2 ) %p
 
 ## step 0: Prover and verifier agree on G and B
 
 ## step 1: Prover creates the commitments
-a = ...
-b = ...
-sL = ...
-sR = ...
-t1 = ...
-t2 = ...
+a = random_element()
+b = random_element()
+sL = random_element()
+sR = random_element()
+t1 = (a * sR + b * sL) % p
+t2 = (sL * sR) % p
 
 ### blinding terms
-alpha = ...
-beta = ...
-gamma = ...
-tau_1 = ...
-tau_2 = ...
+alpha = random_element()
+beta = random_element()
+gamma = random_element()
+tau_1 = random_element()
+tau_2 = random_element()
+
 
 A, S, V, T1, T2 = commit(a, sL, b, sR, alpha, beta, gamma, tau_1, tau_2)
 
 ## step 2: Verifier picks u
-u = ...
+u = random_element()
 
 ## step 3: Prover evaluates l(u), r(u), t(u) and creates evaluation proofs
 l_u = evaluate(a, sL, 0, u)
